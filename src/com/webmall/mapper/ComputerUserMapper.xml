@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.webmall.mapper.ComputerUserMapper">
+	<insert id="addNewUser">
+		insert into computeruser(comp_name,comp_nicke_name,comp_passwrod,comp_email)
+			values(#{compUser.comp_name},#{compUser.comp_nicke_name},#{compUser.comp_passwrod},
+			#{compUser.comp_email})
+	</insert>
+	
+	<select id="selByName" resultType="int">
+		select count(*) from computeruser where comp_name = #{comp_name}
+	</select>
+	
+	<select id="selByUserName" resultType="com.webmall.pojo.ComputerUser">
+		select * from computeruser where comp_name = #{comp_name}
+	</select>
+</mapper>
