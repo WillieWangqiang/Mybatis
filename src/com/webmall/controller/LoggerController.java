@@ -11,7 +11,9 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,9 +31,19 @@ public class LoggerController {
 	public String toLog() {
 		return "comp_log";
 	}
+//	退出账户
+	@RequestMapping("outLog")
+	public String outLogUser(HttpServletRequest req) {
+		HttpSession session= req.getSession();
+		if(session!=null) {
+			//退出账户
+			session.setAttribute("username", null);
+		}
+		return "comp_log";
+	}
 //	登录页面验证
 	@RequestMapping("log")
-	public String logUser(ComputerUser compUser,String comp_identify_code) {
+	public String logUser(ComputerUser compUser,String comp_identify_code,HttpServletRequest req) {
 		String toUrl = "";
 		ComputerUser compUserReal = null;
 		if(compUser.getComp_name() != null) {
@@ -42,7 +54,9 @@ public class LoggerController {
 		}
 		if(compUserReal!=null) {
 			if(compUserReal.getComp_passwrod().equals(compUser.getComp_passwrod())) {
-				toUrl = "redirect:comp_home.jsp";
+				HttpSession session = req.getSession();
+				session.setAttribute("username", compUserReal.getComp_nicke_name());
+				toUrl = "redirect:home";
 			}else {
 				toUrl="comp_log";
 			}
